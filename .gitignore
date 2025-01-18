@@ -1,0 +1,8 @@
+.vs/
+build/
+.dll
+.pdb
+.log
+.bin
+.sln
+.vsconfig

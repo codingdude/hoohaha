@@ -54,6 +54,13 @@ extern Log log;
 #define HOOHAHA_LOG(level, format, ...)                                            \
     { core::log.LogMessage(level, format, __VA_ARGS__); }                          \
 
+#else
+
+#define HOOHAHA_LOG(level, format, ...)                                            \
+    { core::log.LogMessage(__FILE__, __LINE__, level, format, __VA_ARGS__); }      \
+
+#endif // _NDEBUG
+
 #define HOOHAHA_LOG_FATAL(format, ...)                                             \
     HOOHAHA_LOG(core::LogLevel::kFatal, format, __VA_ARGS__)                       \
 
@@ -71,30 +78,5 @@ extern Log log;
 
 #define HOOHAHA_LOG_TRACE(format, ...)                                             \
     HOOHAHA_LOG(core::LogLevel::kTrace, format, __VA_ARGS__)                       \
-
-#else
-
-#define HOOHAHA_LOG(level, format, ...)                                            \
-    { core::log.LogMessage(__FILE__, __LINE__, level, format, __VA_ARGS__); }      \
-
-#define HOOHAHA_LOG_FATAL(format, ...)                                             \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kFatal, format, __VA_ARGS__)   \
-
-#define HOOHAHA_LOG_ERROR(format, ...)                                             \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kError, format, __VA_ARGS__)   \
-
-#define HOOHAHA_LOG_WARN(format, ...)                                              \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kWarning, format, __VA_ARGS__) \
-
-#define HOOHAHA_LOG_INFO(format, ...)                                              \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kInfo, format, __VA_ARGS__)    \
-
-#define HOOHAHA_LOG_DEBUG(format, ...)                                             \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kDebug, format, __VA_ARGS__)   \
-
-#define HOOHAHA_LOG_TRACE(format, ...)                                             \
-    HOOHAHA_LOG(__FILE__, __LINE__, core::LogLevel::kTrace, format, __VA_ARGS__)   \
-
-#endif // _NDEBUG
 
 #endif // HOOHAHA_CORE_LOG_H_

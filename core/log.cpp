@@ -35,7 +35,7 @@ std::string TimeToString(std::chrono::system_clock::time_point time)
 
     localtime_s(&now, &tv_sec);
 
-    std::snprintf(buf_millisec, sizeof(buf_millisec), "%03d", static_cast<int>(tv_sec));
+    std::snprintf(buf_millisec, sizeof(buf_millisec), "%03d", static_cast<int>(millisec.count()));
 
     std::strftime(buf_datetime, sizeof(buf_datetime), "%FT%T.", &now);
     std::strftime(buf_timezone, sizeof(buf_timezone), "%z", &now);

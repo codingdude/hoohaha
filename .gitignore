@@ -1,8 +1,11 @@
 .vs/
 build/
+
 .dll
 .pdb
 .log
 .bin
 .sln
 .vsconfig
+x64
+core/x64

@@ -6,5 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp" />
+    <ClCompile Include="key_values.cpp" />
   </ItemGroup>
 </Project>

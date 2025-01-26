@@ -13,7 +13,9 @@ namespace core
 class KeyValues
 {
 public:
-    using Set = std::unordered_set<KeyValues>;
+    struct Hash { bool operator()(const KeyValues& key_values) const; };
+
+    using Set = std::unordered_set<KeyValues, Hash>;
     using ConstIterator = Set::const_iterator;
 
     using StringArray = std::vector<std::string>;
@@ -45,7 +47,7 @@ public:
     const int* GetIntArrayPtr(std::string_view key) const;
     const float* GetFloatArrayPtr(std::string_view key) const;
 
-    ConstIterator FindKey(std::string_view key) const;
+    ConstIterator FindKeyValues(std::string_view branch) const;
     ConstIterator Begin() const;
     ConstIterator End() const;
 

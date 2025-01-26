@@ -133,6 +133,7 @@
     <ClInclude Include="log.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="key_values.cpp" />
     <ClCompile Include="log.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

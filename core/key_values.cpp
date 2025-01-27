@@ -866,6 +866,14 @@ bool KeyValues::Load(std::string_view::const_iterator& begin,
             }
         }
     }
+    else
+    {
+        HOOHAHA_LOG_ERROR(
+            "An error occurred while parsing KeyValue '%s',"
+            " unexpected symbol.",
+            m_key.c_str());
+        return false;
+    }
 
     return true;
 }

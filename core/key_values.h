@@ -10,7 +10,7 @@
 namespace core
 {
 
-class KeyValues
+class KeyValues final
 {
 public:
     struct Hash { bool operator()(const KeyValues& key_values) const; };
@@ -23,9 +23,12 @@ public:
     using FloatArray = std::vector<float>;
 
 public:
+    KeyValues();
     KeyValues(std::string_view key);
     KeyValues(const KeyValues&) = delete;
     KeyValues(KeyValues&&) = delete;
+
+    void Clear();
 
     bool LoadFromString(std::string_view str);
 
@@ -47,7 +50,8 @@ public:
     const int* GetIntArrayPtr(std::string_view key) const;
     const float* GetFloatArrayPtr(std::string_view key) const;
 
-    ConstIterator FindKeyValues(std::string_view branch) const;
+    const KeyValues*  FindKeyValues(std::string_view branch) const;
+
     ConstIterator Begin() const;
     ConstIterator End() const;
 
@@ -67,6 +71,13 @@ private:
     std::string ReadToken(std::string_view::const_iterator& begin,
                           std::string_view::const_iterator end) const;
 
+    bool SeekControlCharacter(std::string_view::const_iterator& begin,
+                              std::string_view::const_iterator end,
+                              char control_char) const;
+
+    bool Load(std::string_view::const_iterator& begin,
+              std::string_view::const_iterator end) const;
+
 private:
     using Variant = std::variant<
         std::string,
@@ -78,6 +89,7 @@ private:
 
     enum class Type
     {
+        kEmpty,
         kSet,
         kString,
         kInt,
@@ -89,9 +101,9 @@ private:
 
     std::string m_key;
 
-    Type    m_type;
-    Variant m_value;
-    Set     m_set;
+    mutable Type    m_type;
+    mutable Variant m_value;
+    mutable Set     m_set;
 };
 
 }

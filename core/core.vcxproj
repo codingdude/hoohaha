@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="key_values.h" />
     <ClInclude Include="log.h" />
+    <ClInclude Include="mathlib.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="key_values.cpp" />

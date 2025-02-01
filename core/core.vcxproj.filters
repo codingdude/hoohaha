@@ -9,4 +9,7 @@
     <ClCompile Include="log.cpp" />
     <ClCompile Include="key_values.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="mathlib.inl" />
+  </ItemGroup>
 </Project>

@@ -1,3 +1,21 @@
+/*
+    Hoohaha Game Engine
+    Copyright (C) 2025 codingdude@gmail.com
+
+    This program is free software : you can redistribute it and /or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef HOOHAHA_CORE_MATHLIB_H_
 #define HOOHAHA_CORE_MATHLIB_H_
 
@@ -8,12 +26,10 @@ class Vector3d final
 {
 public:
     inline Vector3d();
-    inline Vector3d(float scalar);
     inline Vector3d(float* raw_ptr);
     inline Vector3d(float x, float y, float z);
 
-    inline void Init(float scalar);
-    inline void Init(float* raw_ptr); // yeah, but no, but...
+    inline void Init(float* raw_ptr);
     inline void Init(float x, float y, float z);
     inline void Normalize();
     inline void Clear();
@@ -50,13 +66,13 @@ public:
     inline Vector3d operator*(float scalar) const;
     inline Vector3d operator/(float scalar) const;
 
-    inline Vector3d& operator+=(const Vector3d& rhs);
-    inline Vector3d& operator-=(const Vector3d& rhs);
-    inline Vector3d& operator*=(const Vector3d& rhs);
-    inline Vector3d& operator/=(const Vector3d& rhs);
+    inline void operator+=(const Vector3d& rhs);
+    inline void operator-=(const Vector3d& rhs);
+    inline void operator*=(const Vector3d& rhs);
+    inline void operator/=(const Vector3d& rhs);
 
-    inline Vector3d& operator*=(float scalar);
-    inline Vector3d& operator/=(float scalar);
+    inline void operator*=(float scalar);
+    inline void operator/=(float scalar);
 
 private:
     enum
@@ -68,19 +84,17 @@ private:
         kSize = 3
     };
 
-    float xyz[kSize];
+    float m_xyz[kSize];
 };
 
 class Vector4d final
 {
 public:
     inline Vector4d();
-    inline Vector4d(float scalar);
     inline Vector4d(float* raw_ptr);
     inline Vector4d(float x, float y, float z, float w);
 
-    inline void Init(float scalar);
-    inline void Init(float* raw_ptr); // yeah, but no, but...
+    inline void Init(float* raw_ptr);
     inline void Init(float x, float y, float z, float w);
     inline void Normalize();
     inline void Clear();
@@ -92,7 +106,6 @@ public:
 
     inline float Length() const;
     inline float DotProduct(const Vector4d& rhs) const;
-    inline Vector4d CrossProduct(const Vector4d& rhs) const;
     inline Vector4d GetNormalized() const;
 
     inline float X() const;
@@ -119,13 +132,13 @@ public:
     inline Vector4d operator*(float scalar) const;
     inline Vector4d operator/(float scalar) const;
 
-    inline Vector4d& operator+=(const Vector4d& rhs);
-    inline Vector4d& operator-=(const Vector4d& rhs);
-    inline Vector4d& operator*=(const Vector4d& rhs);
-    inline Vector4d& operator/=(const Vector4d& rhs);
+    inline void operator+=(const Vector4d& rhs);
+    inline void operator-=(const Vector4d& rhs);
+    inline void operator*=(const Vector4d& rhs);
+    inline void operator/=(const Vector4d& rhs);
 
-    inline Vector4d& operator*=(float scalar);
-    inline Vector4d& operator/=(float scalar);
+    inline void operator*=(float scalar);
+    inline void operator/=(float scalar);
 
 private:
     enum
@@ -138,9 +151,11 @@ private:
         kSize = 4
     };
 
-    float xyzw[kSize];
+    float m_xyzw[kSize];
 };
 
 }
+
+#include "mathlib.inl"
 
 #endif // HOOHAHA_CORE_MATHLIB_H_

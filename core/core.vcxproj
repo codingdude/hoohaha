@@ -137,6 +137,9 @@
     <ClCompile Include="key_values.cpp" />
     <ClCompile Include="log.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="mathlib.inl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

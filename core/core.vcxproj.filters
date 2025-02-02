@@ -8,6 +8,7 @@
   <ItemGroup>
     <ClCompile Include="log.cpp" />
     <ClCompile Include="key_values.cpp" />
+    <ClCompile Include="mathlib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mathlib.inl" />

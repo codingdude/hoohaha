@@ -37,7 +37,7 @@ public:
     inline float* Data();
     inline const float* Data() const;
 
-    inline int Size() const;
+    static inline int Size();
 
     inline float Length() const;
     inline float DotProduct(const Vector3d& rhs) const;
@@ -92,9 +92,11 @@ class Vector4d final
 public:
     inline Vector4d();
     inline Vector4d(const float* raw_ptr);
+    inline Vector4d(const Vector3d& xyz, float w = 0.f);
     inline Vector4d(float x, float y, float z, float w);
 
     inline void Init(const float* raw_ptr);
+    inline void Init(const Vector3d& xyz, float w = 0.f);
     inline void Init(float x, float y, float z, float w);
     inline void Normalize();
     inline void Clear();
@@ -102,7 +104,7 @@ public:
     inline float* Data();
     inline const float* Data() const;
 
-    inline int Size() const;
+    static inline int Size();
 
     inline float Length() const;
     inline float DotProduct(const Vector4d& rhs) const;
@@ -183,7 +185,7 @@ public:
     inline float* Data();
     inline const float* Data() const;
 
-    inline int Size() const;
+    static inline int Size();
 
     static inline Matrix3d GetIdentity();
     inline Matrix3d GetNormalized() const;
@@ -198,8 +200,8 @@ public:
     inline Vector3d& y();
     inline Vector3d& Z();
 
-    inline Matrix3d operator[](int axis) const;
-    inline Matrix3d& operator[](int axis);
+    inline Vector3d operator[](int axis) const;
+    inline Vector3d& operator[](int axis);
 
     inline Matrix3d operator+(const Matrix3d& rhs) const;
     inline Matrix3d operator-(const Matrix3d& rhs) const;
@@ -228,6 +230,8 @@ public:
     inline Matrix4d(const Matrix3d& rotation);
     inline Matrix4d(const Vector3d& translation, const Matrix3d& rotation,
                     const Vector3d& scale = {1.f, 1.f, 1.f});
+    inline Matrix4d(float fov, float aspect_ratio,
+                    float near_clip_plane, float far_clip_plane);
     inline Matrix4d(const Vector4d& x, const Vector4d& y,
                     const Vector4d& z, const Vector4d& w);
     inline Matrix4d(float xx, float xy, float xz, float xw,
@@ -239,6 +243,8 @@ public:
     inline void Init(const Matrix3d& rotation);
     inline void Init(const Vector3d& translation, const Matrix3d& rotation,
                      const Vector3d& scale = { 1.f, 1.f, 1.f });
+    inline void Init(float fov, float aspect_ratio,
+                     float near_clip_plane, float far_clip_plane);
     inline void Init(const Vector4d& x, const Vector4d& y,
                      const Vector4d& z, const Vector4d& w);
     inline void Init(float xx, float xy, float xz, float xw,
@@ -255,7 +261,7 @@ public:
     inline float* Data();
     inline const float* Data() const;
 
-    inline int Size() const;
+    static inline int Size();
 
     static inline Matrix4d GetIdentity();
     inline Matrix4d GetNormalized() const;
@@ -263,7 +269,6 @@ public:
     inline Matrix4d GetTransposed() const;
     inline Matrix3d GetRotation() const;
     inline Vector3d GetTranslation() const;
-    inline Vector3d GetScale() const;
 
     inline Vector4d X() const;
     inline Vector4d Y() const;
@@ -275,8 +280,8 @@ public:
     inline Vector4d& Z();
     inline Vector4d& W();
 
-    inline Matrix4d operator[](int axis) const;
-    inline Matrix4d& operator[](int axis);
+    inline Vector4d operator[](int axis) const;
+    inline Vector4d& operator[](int axis);
 
     inline Matrix4d operator+(const Matrix4d& rhs) const;
     inline Matrix4d operator-(const Matrix4d& rhs) const;

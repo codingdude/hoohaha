@@ -27,7 +27,7 @@ inline Vector3d::Vector3d()
 {
 }
 
-inline Vector3d::Vector3d(float* raw_ptr)
+inline Vector3d::Vector3d(const float* raw_ptr)
 {
     Init(raw_ptr);
 }
@@ -37,7 +37,7 @@ inline Vector3d::Vector3d(float x, float y, float z)
 {
 }
 
-inline void Vector3d::Init(float* raw_ptr)
+inline void Vector3d::Init(const float* raw_ptr)
 {
     m_xyz[kXIndex] = raw_ptr[kXIndex];
     m_xyz[kYIndex] = raw_ptr[kYIndex];
@@ -269,7 +269,7 @@ inline Vector4d::Vector4d()
 {
 }
 
-inline Vector4d::Vector4d(float* raw_ptr)
+inline Vector4d::Vector4d(const float* raw_ptr)
 {
     Init(raw_ptr);
 }
@@ -279,7 +279,7 @@ inline Vector4d::Vector4d(float x, float y, float z, float w)
 {
 }
 
-inline void Vector4d::Init(float* raw_ptr)
+inline void Vector4d::Init(const float* raw_ptr)
 {
     assert(raw_ptr);
     m_xyzw[kXIndex] = raw_ptr[kXIndex];

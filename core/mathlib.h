@@ -303,17 +303,24 @@ private:
     Vector4d m_axes[kSize];
 };
 
+inline float RadToDeg(float rad);
+inline float DegToRad(float deg);
+
 extern void FromEulerAngles(float yaw, float pitch, float roll, Matrix3d& out);
 extern void FromAxisAndAngle(const Vector3d& axis, float angle, Matrix3d& out);
 extern void MatrixAdd(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
 extern void MatrixSubtract(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
 extern void MatrixMultiply(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
-extern void MatrixInverse(Matrix3d& in_out);
+extern void MatrixInverse(const Matrix3d& in, Matrix3d& out);
 
 extern void MatrixAdd(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
 extern void MatrixSubtract(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
 extern void MatrixMultiply(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
-extern void MatrixInverse(Matrix4d& in_out);
+extern void MatrixInverse(const Matrix4d& in, Matrix4d& out);
+extern void MatrixBuildAffine(const Vector3d& translation, const Matrix3d& rotation,
+                              const Vector3d& scale, Matrix4d& out);
+extern void MatrixBuildPerspective(float fov, float aspect_ratio, float near_clip_plane,
+                                   float far_clip_plane, Matrix4d& out);
 
 extern Vector3d operator * (const Vector3d& lhs, const Matrix3d& rhs);
 extern Vector4d operator * (const Vector4d& lhs, const Matrix4d& rhs);

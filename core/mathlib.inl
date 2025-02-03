@@ -23,6 +23,16 @@
 namespace core
 {
 
+inline float RadToDeg(float rad)
+{
+    return rad * 180.f / static_cast<float>(M_PI);
+}
+
+inline float DegToRad(float deg)
+{
+    return deg / 180.f * static_cast<float>(M_PI);
+}
+
 inline Vector3d::Vector3d()
     : m_xyz{}
 {
@@ -631,7 +641,7 @@ inline void Matrix3d::Normalize()
 
 inline void Matrix3d::Inverse()
 {
-    MatrixInverse(*this);
+    MatrixInverse(*this, *this);
 }
 
 inline void Matrix3d::Transpose()
@@ -672,8 +682,8 @@ inline Matrix3d Matrix3d::GetNormalized() const
 
 inline Matrix3d Matrix3d::GetInversed() const
 {
-    Matrix3d result(*this);
-    MatrixInverse(result);
+    Matrix3d result;
+    MatrixInverse(*this, result);
     return result;
 }
 
@@ -819,32 +829,14 @@ inline void Matrix4d::Init(const Vector3d& translation,
                            const Matrix3d& rotation,
                            const Vector3d& scale)
 {
-    m_axes[kXAxis].Init(scale[0] * rotation[0][0], scale[1] *
-        rotation[0][1], scale[2] * rotation[0][2], 0.f);
-    m_axes[kYAxis].Init(scale[0] * rotation[1][0], scale[1] *
-        rotation[1][1], scale[2] * rotation[1][2], 0.f);
-    m_axes[kZAxis].Init(scale[0] * rotation[2][0], scale[1] *
-        rotation[2][1], scale[2] * rotation[2][2], 0.f);
-    m_axes[kWAxis].Init(translation, 1.f);
+    MatrixBuildAffine(translation, rotation, scale, *this);
 }
 
 inline void Matrix4d::Init(float fov, float aspect_ratio,
                            float near_clip_plane, float far_clip_plane)
 {
-    const float tg = std::tanf(fov * .5f);
-
-    assert(tg && aspect_ratio && near_clip_plane != far_clip_plane);
-
-    m_axes[1][1] = 1.f / tg;
-    m_axes[0][0] = m_axes[1][1] / aspect_ratio;
-    m_axes[2][2] = far_clip_plane / (far_clip_plane - near_clip_plane);
-    m_axes[3][2] = near_clip_plane * far_clip_plane / (near_clip_plane - far_clip_plane);
-    m_axes[2][3] = 1.f;
-
-    m_axes[0][1] = m_axes[0][2] = m_axes[0][3] = 0.f;
-    m_axes[1][0] = m_axes[1][2] = m_axes[1][3] = 0.f;
-    m_axes[2][0] = m_axes[2][1] = 0.f;
-    m_axes[3][0] = m_axes[3][1] = m_axes[3][3] = 0.f;
+    MatrixBuildPerspective(fov, aspect_ratio, near_clip_plane,
+                           far_clip_plane, *this);
 }
 
 inline void Matrix4d::Init(const Vector4d& x, const Vector4d& y,
@@ -888,12 +880,11 @@ inline void Matrix4d::Normalize()
     m_axes[kXAxis].Normalize();
     m_axes[kYAxis].Normalize();
     m_axes[kZAxis].Normalize();
-    m_axes[kWAxis].Normalize();
 }
 
 inline void Matrix4d::Inverse()
 {
-    MatrixInverse(*this);
+    MatrixInverse(*this, *this);
 }
 
 inline void Matrix4d::Transpose()
@@ -934,13 +925,13 @@ inline Matrix4d Matrix4d::GetNormalized() const
     return {m_axes[kXAxis].GetNormalized(),
             m_axes[kYAxis].GetNormalized(),
             m_axes[kZAxis].GetNormalized(),
-            m_axes[kWAxis].GetNormalized()};
+            m_axes[kWAxis]};
 }
 
 inline Matrix4d Matrix4d::GetInversed() const
 {
-    Matrix4d result(*this);
-    MatrixInverse(result);
+    Matrix4d result;
+    MatrixInverse(*this, result);
     return result;
 }
 

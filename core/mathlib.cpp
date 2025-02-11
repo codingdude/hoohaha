@@ -91,9 +91,87 @@ void MatrixMultiply(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out)
              lhs[2][0] * rhs[0][2] + lhs[2][1] * rhs[1][2] + lhs[2][2] * rhs[2][2]);
 }
 
-void MatrixInverse(const Matrix3d& in, Matrix3d& out)
+bool MatrixInverse(const Matrix3d& in, Matrix3d& out)
 {
+    if (const float det = MatrixDeterminant(in))
+    {
+        Matrix3d cofactor;
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                float minor[2][2];
+                int m = 0;
+                for (int k = 0; k < 3; ++k)
+                {
+                    if (k == i)
+                    {
+                        continue;
+                    }
 
+                    int n = 0;
+                    for (int l = 0; l < 3; ++l)
+                    {
+                        if (l == j)
+                        {
+                            continue;
+                        }
+
+                        minor[m][n] = in[k][l];
+                        n++;
+                    }
+
+                    m++;
+                }
+
+                cofactor[i][j] = std::powf(-1.0f, static_cast<float>(i + j))
+                    * ((minor[0][0]) * (minor[1][1]) - (minor[0][1]) * (minor[1][0]));
+            }
+        }
+
+        const float detInv = 1.0f / det;
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                out[i][j] = detInv * cofactor[j][i];
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+float MatrixDeterminant(const Matrix3d& in)
+{
+    float result = 0;
+    for (int i = 0; i < 3; ++i)
+    {
+        float k = 1.0f;
+        for (int j = 0; j < 3; ++j)
+        {
+            const int a = (i + j) % 3;
+            k *= in[a][j];
+        }
+
+        result += k;
+    }
+
+    for (int i = 4; i >= 2; --i)
+    {
+        float k = 1.0f;
+        for (int j = 0; j < 3; ++j)
+        {
+            const int a = (i + j) % 3;
+            k *= in[a][j];
+        }
+
+        result -= k;
+    }
+
+    return result;
 }
 
 void MatrixAdd(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out)
@@ -132,9 +210,87 @@ void MatrixMultiply(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out)
              lhs[3][0] * rhs[0][3] + lhs[3][1] * rhs[1][3] + lhs[3][2] * rhs[2][3] + lhs[3][2] * rhs[3][3]);
 }
 
-void MatrixInverse(const Matrix4d& in, Matrix4d& out)
+bool MatrixInverse(const Matrix4d& in, Matrix4d& out)
 {
+    if (const float det = MatrixDeterminant(in))
+    {
+        Matrix4d cofactor;
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                Matrix3d minor;
+                int m = 0;
+                for (int k = 0; k < 4; ++k)
+                {
+                    if (k == i)
+                    {
+                        continue;
+                    }
 
+                    int n = 0;
+                    for (int l = 0; l < 4; ++l)
+                    {
+                        if (l == j)
+                        {
+                            continue;
+                        }
+
+                        minor[m][n] = in[k][l];
+                        n++;
+                    }
+
+                    m++;
+                }
+
+                cofactor[i][j] = std::powf(-1.0f, static_cast<float>(i + j))
+                    * MatrixDeterminant(minor);
+            }
+        }
+
+        const float detInv = 1.0f / det;
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                out[i][j] = detInv * cofactor[j][i];
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+extern float MatrixDeterminant(const Matrix4d& in)
+{
+    Matrix3d minor;
+    float result = 0;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        int m = 0;
+        for (int k = 0; k < 4; ++k)
+        {
+            if (k == i)
+            {
+                continue;
+            }
+
+            for (int j = 1; j < 4; ++j)
+            {
+                minor[m][j - 1] = in[k][j];
+            }
+
+            m++;
+        }
+
+        result += std::powf(-1.0f, static_cast<float>(i))
+            * in[i][0] * MatrixDeterminant(minor);
+    }
+
+    return result;
 }
 
 void MatrixBuildAffine(const Vector3d& translation, const Matrix3d& rotation,
@@ -150,7 +306,7 @@ void MatrixBuildAffine(const Vector3d& translation, const Matrix3d& rotation,
 }
 
 void MatrixBuildPerspective(float fov, float aspect_ratio, float near_clip_plane,
-                                   float far_clip_plane, Matrix4d& out)
+                            float far_clip_plane, Matrix4d& out)
 {
     const float tg = std::tanf(fov * .5f);
 
@@ -170,12 +326,17 @@ void MatrixBuildPerspective(float fov, float aspect_ratio, float near_clip_plane
 
 Vector3d operator * (const Vector3d& lhs, const Matrix3d& rhs)
 {
-    return {};
+    return {lhs[0] * rhs[0][0] + lhs[1] * rhs[1][0] + lhs[2] * rhs[2][0],
+            lhs[0] * rhs[0][1] + lhs[1] * rhs[1][1] + lhs[2] * rhs[2][1],
+            lhs[0] * rhs[0][2] + lhs[1] * rhs[1][2] + lhs[2] * rhs[2][2]};
 }
 
 Vector4d operator * (const Vector4d& lhs, const Matrix4d& rhs)
 {
-    return {};
+    return {lhs[0] * rhs[0][0] + lhs[1] * rhs[1][0] + lhs[2] * rhs[2][0] + lhs[3] * rhs[3][0],
+            lhs[0] * rhs[0][1] + lhs[1] * rhs[1][1] + lhs[2] * rhs[2][1] + lhs[3] * rhs[3][1],
+            lhs[0] * rhs[0][2] + lhs[1] * rhs[1][2] + lhs[2] * rhs[2][2] + lhs[3] * rhs[3][2],
+            lhs[0] * rhs[0][3] + lhs[1] * rhs[1][3] + lhs[2] * rhs[2][3] + lhs[3] * rhs[3][3]};
 }
 
 }

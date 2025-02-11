@@ -639,9 +639,9 @@ inline void Matrix3d::Normalize()
     m_axes[kZAxis].Normalize();
 }
 
-inline void Matrix3d::Inverse()
+inline bool Matrix3d::Inverse()
 {
-    MatrixInverse(*this, *this);
+    return MatrixInverse(*this, *this);
 }
 
 inline void Matrix3d::Transpose()
@@ -882,9 +882,9 @@ inline void Matrix4d::Normalize()
     m_axes[kZAxis].Normalize();
 }
 
-inline void Matrix4d::Inverse()
+inline bool Matrix4d::Inverse()
 {
-    MatrixInverse(*this, *this);
+    return MatrixInverse(*this, *this);
 }
 
 inline void Matrix4d::Transpose()

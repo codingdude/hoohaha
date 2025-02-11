@@ -179,7 +179,7 @@ public:
     inline void Clear();
     inline void Identity();
     inline void Normalize();
-    inline void Inverse();
+    inline bool Inverse();
     inline void Transpose();
 
     inline float* Data();
@@ -255,7 +255,7 @@ public:
     inline void Clear();
     inline void Identity();
     inline void Normalize();
-    inline void Inverse();
+    inline bool Inverse();
     inline void Transpose();
 
     inline float* Data();
@@ -311,12 +311,14 @@ extern void FromAxisAndAngle(const Vector3d& axis, float angle, Matrix3d& out);
 extern void MatrixAdd(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
 extern void MatrixSubtract(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
 extern void MatrixMultiply(const Matrix3d& lhs, const Matrix3d& rhs, Matrix3d& out);
-extern void MatrixInverse(const Matrix3d& in, Matrix3d& out);
+extern bool MatrixInverse(const Matrix3d& in, Matrix3d& out);
+extern float MatrixDeterminant(const Matrix3d& in);
 
 extern void MatrixAdd(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
 extern void MatrixSubtract(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
 extern void MatrixMultiply(const Matrix4d& lhs, const Matrix4d& rhs, Matrix4d& out);
-extern void MatrixInverse(const Matrix4d& in, Matrix4d& out);
+extern bool MatrixInverse(const Matrix4d& in, Matrix4d& out);
+extern float MatrixDeterminant(const Matrix4d& in);
 extern void MatrixBuildAffine(const Vector3d& translation, const Matrix3d& rotation,
                               const Vector3d& scale, Matrix4d& out);
 extern void MatrixBuildPerspective(float fov, float aspect_ratio, float near_clip_plane,

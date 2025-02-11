@@ -3,9 +3,14 @@
   <ItemGroup>
     <ClInclude Include="log.h" />
     <ClInclude Include="key_values.h" />
+    <ClInclude Include="mathlib.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp" />
     <ClCompile Include="key_values.cpp" />
+    <ClCompile Include="mathlib.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mathlib.inl" />
   </ItemGroup>
 </Project>
